@@ -70,7 +70,7 @@ class Testimonial
             'hide_on_screen' => '',
         ));
 
-        // Image
+        // Byline
         acf_add_local_field(array(
             'key' => 'byline',
             'label' => 'Byline',
@@ -79,6 +79,16 @@ class Testimonial
             'parent' => 'group_testimonial_details',
             'instructions' => 'Example: John Doe, Mexico Beach',
             'required' => 1,
+        ));
+
+        // Featured
+        acf_add_local_field(array(
+            'key' => 'featured',
+            'label' => 'Featured',
+            'name' => 'featured',
+            'type' => 'true_false',
+            'parent' => 'group_testimonial_details',
+            'message' => 'Display on homepage?'
         ));
 
     }
