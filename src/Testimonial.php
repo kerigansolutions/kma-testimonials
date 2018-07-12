@@ -146,9 +146,9 @@ class Testimonial
             ]
         );
     }
-    public function project_init()
+    public function testimonial_init()
     {
-        register_post_type('project', array(
+        register_post_type('testimonial', array(
             'labels' => array(
                 'name' => __($this->menuName, 'wordplate'),
                 'singular_name' => __($this->singularName, 'wordplate'),
