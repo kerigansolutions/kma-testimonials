@@ -86,7 +86,7 @@ class Testimonial
     public function use()
     {
         add_action('init', [$this, 'testimonial_init']);
-        add_filter('post_updated_messages', [$this, 'testimonial_updated_messages']);
+        add_filter('testimonial_updated_messages', [$this, 'testimonial_updated_messages']);
         if (function_exists('acf_add_local_field_group')) {
             add_action('acf/init', [$this, 'registerFields']);
         }
@@ -198,7 +198,7 @@ class Testimonial
      * @param  array $messages Post updated messages.
      * @return array Messages for the `project` post type.
      */
-    public function project_updated_messages($messages)
+    public function testimonial_updated_messages($messages)
     {
         global $post;
 
