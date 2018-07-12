@@ -127,6 +127,7 @@ class Testimonial
                 'slug' => (isset($testimonial->post_name) ? $testimonial->post_name : null),
                 'byline' => get_field('byline', $testimonial->ID),
                 'link' => get_permalink($testimonial->ID),
+                'featured' => get_field('featured', $testimonial->ID)
             ]);
         }
 
