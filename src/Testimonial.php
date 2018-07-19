@@ -103,32 +103,39 @@ class Testimonial
     }
 
     /*
-     * Query WP for slides
+     * Query WP for testimonial
      */
-    public function queryTestimonials($limit = -1)
+    public function queryTestimonials($featured = false, $limit = -1, $orderby = 'menu_order', $order = 'ASC', $truncate = 0)
     {
         $request = [
             'posts_per_page' => $limit,
             'offset' => 0,
-            'order' => 'ASC',
-            'orderby' => 'menu_order',
+            'order' => $order,
+            'orderby' => $orderby,
             'post_type' => 'testimonial',
-            'post_status' => 'publish',
+            'post_status' => 'publish'
         ];
 
+        if($featured){
+            $request['meta_query'] = [
+                'relation' => 'AND',
+                    [
+                        'key'     => 'featured',
+                        'value'   => 1,
+                        'compare' => '='
+                    ]
+            ];
+        }
 
         $testimonialList = get_posts($request);
 
         $testimonialArray = [];
         foreach ($testimonialList as $testimonial) {
-            array_push($projectArray, [
-                'id' => (isset($testimonial->ID) ? $testimonial->ID : null),
-                'name' => (isset($testimonial->post_title) ? $testimonial->post_title : null),
-                'slug' => (isset($testimonial->post_name) ? $testimonial->post_name : null),
-                'byline' => get_field('byline', $testimonial->ID),
-                'link' => get_permalink($testimonial->ID),
-                'featured' => get_field('featured', $testimonial->ID)
-            ]);
+            $testimonial->byline = get_field('byline', $testimonial->ID);
+            $testimonial->featured = get_field('featured', $testimonial->ID);
+            $readmore = '... <a href="/testimonials/#' . $testimonial->ID . '">read more.</a>';
+            $testimonial->truncate = ($truncate > 0 ? wp_trim_words($testimonial->post_content, $truncate, $readmore) : '');
+            $testimonialArray[] = $testimonial;
         }
 
         return $testimonialArray;
@@ -139,8 +146,9 @@ class Testimonial
      */
     public function getTestimonials($request)
     {
-        $limit = $request->get_param('limit');
-        return rest_ensure_response($this->queryTestimonials($limit));
+        $limit    = $request->get_param('limit');
+        $featured = $request->get_param('featured');
+        return rest_ensure_response($this->queryTestimonials($featured, $limit));
     }
 
     /**
