@@ -98,7 +98,7 @@ class Testimonial
         add_action('init', [$this, 'testimonial_init']);
         add_filter('testimonial_updated_messages', [$this, 'testimonial_updated_messages']);
         if (function_exists('acf_add_local_field_group')) {
-            add_action('acf/init', [$this, 'registerFields']);
+            add_action('init', [$this, 'registerFields']);
         }
     }
 
