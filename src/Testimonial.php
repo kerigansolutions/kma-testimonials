@@ -134,6 +134,7 @@ class Testimonial
             $testimonial->byline = get_field('byline', $testimonial->ID);
             $testimonial->featured = get_field('featured', $testimonial->ID);
             $readmore = '... <a href="/testimonials/#' . $testimonial->ID . '">read more.</a>';
+            $testimonial->excerpt = ($truncate > 0 ? wp_trim_words($testimonial->post_content, $truncate, '...') : '');
             $testimonial->truncate = ($truncate > 0 ? wp_trim_words($testimonial->post_content, $truncate, $readmore) : '');
             $testimonialArray[] = $testimonial;
         }
